@@ -68,7 +68,71 @@ public class Intcoll6
     public void omit(int i)
     {
 
-        // Missing
+        if (i>0)
+        {
+            btNode pred=null, tmp=null, p=c;
+
+            while ((p!=null)&&(p.info!=i))
+            {
+                pred = p;
+                if (p.info>i){
+                    p=p.left;
+                }
+                else {
+                    p = p.right;
+                }
+            }
+            if(p.info == i){
+
+                if (p.left != null && p.right !=null){
+                    tmp = p;
+                    while (tmp.left != null){
+                        //pred = tmp;
+                        tmp = tmp.left;
+                        if (tmp.right != null){
+                            //pred = tmp;
+                            tmp = tmp.right;
+                        }else {
+                            break;
+                        }
+                    }
+                    tmp.right = p.right;
+                    p = tmp;
+
+                    if (pred.left.left == p){
+                        pred.left = p;
+                    }else {
+                        pred.right = p;
+                    }
+                   // p.info = tmp.info;
+                    //tmp = null;
+                    //p=null;
+                    //pred.left = null;pred.right = null;
+                    howmany--;
+
+                }
+                else if(p.right == null && p.left != null){
+                    //tmp = p;
+                    pred.left = p.left;
+                    p = null;
+                    howmany--;
+
+                }else if(p.right != null && p.left == null){
+                    pred.right = p.right;
+                    p = null;
+                    howmany--;
+                }else  if(p.right == null && p.left == null){
+                    if (pred.right != null && pred.right.info == i){
+                         pred.right = null;
+                    }else {
+                        pred.left = null;
+                    }
+                    p = null;
+                    howmany--;
+                }
+            }
+
+        }
 
     }
 
@@ -96,7 +160,19 @@ public class Intcoll6
         if (result)
         {
 
-            //Missing
+            int[] thisarray = new int[howmany];
+
+                toarray(c,thisarray,0);
+
+            int[] objarray = new int[obj.howmany];
+                toarray(obj.c,objarray,0);
+
+
+            for (int x = 0; x<thisarray.length; x++){
+                if (thisarray[x] != objarray[x]){
+                    return false;
+                }
+            }
 
         }
         return result;
@@ -137,5 +213,34 @@ public class Intcoll6
         {
             info=0; left=null; right=null;
         }
+    }
+
+
+    public static void main(String[] args){
+        Intcoll6 temp = new Intcoll6();
+        Intcoll6 temp1 = new Intcoll6();
+        temp.insert(12);
+        temp.insert(24);
+        temp.insert(23);
+        temp.insert(25);
+        temp.insert(7);
+        temp.insert(6);
+        temp.insert(5);
+        temp.insert(8);
+        temp.insert(9);
+        //temp.print();
+
+        temp1.insert(6);
+        temp1.insert(7);
+        temp1.insert(4);
+        temp1.insert(5);
+        temp1.insert(9);
+        //temp1.print();
+        //temp1.insert(5);
+        //temp1.insert(6);
+        //temp2.copy(temp1);
+        System.out.println(temp.equals(temp1));
+        temp.omit(24);
+        temp.print();
     }
 }
