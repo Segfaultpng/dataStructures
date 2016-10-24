@@ -82,27 +82,64 @@ public class Intcoll6
                     p = p.right;
                 }
             }
-            if(p.info == i){
+            if(p != null && p.info == i){
 
                 if (p.left != null && p.right !=null){
-                    tmp = p;
+                    tmp = p;  btNode tmpPred = null;
                     while (tmp.left != null){
+
+                            tmpPred = tmp;
+
                         //pred = tmp;
                         tmp = tmp.left;
+                        if (tmp.right == null){
+                            break;
+                        }
+                        while (tmp.right != null){
+                              //pred = tmp;
+
+                                tmpPred = tmp;
+
+                              tmp = tmp.right;
+                        } /*
                         if (tmp.right != null){
                             //pred = tmp;
                             tmp = tmp.right;
                         }else {
                             break;
                         }
+                        */
                     }
-                    tmp.right = p.right;
-                    p = tmp;
-
-                    if (pred.left.left == p){
-                        pred.left = p;
+                    if (pred == null){
+                        /*
+                        c = null;
+                        tmp.left = p.left;
+                        c = tmp;
+                        */
+                        p.info = tmp.info;
+                        if (tmpPred.right != null && tmpPred.right == tmp){
+                            tmpPred.right = null;
+                        }
+                        else {
+                            tmpPred.left = null;
+                        }
+                        tmp = null;
+                        //p = tmp;
                     }else {
-                        pred.right = p;
+                        tmp.right = p.right;
+
+                        if (tmpPred.right !=null && tmpPred.left == null){
+                            tmpPred.right = null;
+                            tmp.left = p.left;
+                        }
+
+                        p = tmp;
+
+                        if (pred.left != null && pred.left.left == p) {
+                            pred.left = p;
+                        } else {
+                            pred.right = p;
+                        }
                     }
                    // p.info = tmp.info;
                     //tmp = null;
