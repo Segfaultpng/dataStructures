@@ -71,17 +71,17 @@ public class MultiStringcoll {
         {
             btNode pred=null, tmp=null, p=c;
 
-            while ((p!=null)&&(p.info!=i))
+            while ((p!=null)&&(p.info.compareTo(i)!=0))
             {
                 pred = p;
                 if (p.info.compareTo(i)>0){
                     p=p.left;
                 }
-                else {
+                else if (p.info.compareTo(i)<0) {
                     p = p.right;
                 }
             }
-            if(p != null && p.info == i){
+            if(p != null && p.info.compareTo(i) == 0){
 
                 if (p.left != null && p.right !=null){
                     tmp = p;  btNode tmpPred = null;
@@ -148,26 +148,36 @@ public class MultiStringcoll {
 
                 }
                 else if(p.right == null && p.left != null){
-                    //tmp = p;
-                    pred.left = p.left;
-                    p = null;
-                    howmany--;
+                    if (pred == null){
+                        c = p.left;
+                    }else {
+                        pred.left = p.left;
+                        p = null;
+                        howmany--;
+                    }
 
                 }else if(p.right != null && p.left == null){
                     if (pred == null){
-                        c = p;
+                        c = p.right;
                     }else {
                         pred.right = p.right;
                         p = null;
                         howmany--;
                     }
                 }else  if(p.right == null && p.left == null){
-                    if (pred.right != null && pred.right.info == i){
-                        pred.right = null;
+                    if (pred != null) {
+                        if (pred.right != null && pred.right.info.compareTo(i) == 0) {
+                            pred.right = null;
+                        } else {
+                            pred.left = null;
+                        }
+                        p = null;
                     }else {
-                        pred.left = null;
+                        p.right = null;
+                        p.left = null;
+                        p = null;
+                        c=p;
                     }
-                    p = null;
                     howmany--;
                 }
             }
@@ -242,25 +252,25 @@ public class MultiStringcoll {
 
     private static class btNode
     {
-        String info; btNode left; btNode right;
+        String info; int count; btNode left; btNode right;
 
         private btNode(String s, btNode lt, btNode rt)
         {
-            info=s; left=lt; right=rt;
+            info=s; left=lt; right=rt; count =0;
         }
 
         private btNode()
         {
-            info=""; left=null; right=null;
+            info=""; left=null; right=null; count=0;
         }
     }
 
     public static void main(String[] args){
         MultiStringcoll temp = new MultiStringcoll();
         MultiStringcoll temp1 = new MultiStringcoll();
-        temp.insert("a");
-        temp.insert("b");
-        temp.insert("c");
+        temp.insert("hello");
+        temp.insert("bye");
+        temp.insert("hi");
 
         //temp.print();
 
@@ -272,7 +282,7 @@ public class MultiStringcoll {
         //temp1.insert(6);
         //temp2.copy(temp1);
         System.out.println(temp.equals(temp1));
-        temp.omit("a");
+        temp.omit("bye");
         temp.print();
     }
 
