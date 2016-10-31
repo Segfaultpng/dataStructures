@@ -3,18 +3,21 @@
  */
 public class MultiStringcoll {
     private int howmany;
+    private int total;
     private btNode c;
 
     public MultiStringcoll()
     {
         c = null;
         howmany = 0;
+        total = 0;
     }
 
     public MultiStringcoll(int i)
     {
         c = null;
         howmany = 0;
+        total = 0;
     }
 
     private static btNode copytree(btNode t)
@@ -24,6 +27,7 @@ public class MultiStringcoll {
         {
             root=new btNode();
             root.info=t.info;
+            root.count=t.count;
             root.left=copytree(t.left);
             root.right=copytree(t.right);
         }
@@ -35,17 +39,18 @@ public class MultiStringcoll {
         if (this!=obj)
         {
             howmany=obj.howmany;
+            total = obj.total;
             c=copytree(obj.c);
         }
     }
 
     public void insert(String i)
     {
-        if (i!="")
+        if (i.compareTo("")!=0)
         {
             btNode pred=null, p=c;
 
-            while ((p!=null)&&(p.info!=i))
+            while ((p!=null)&&(p.info.compareTo(i)!=0))
             {
                 pred=p;
                 if (p.info.compareTo(i)>0) p=p.left;
@@ -53,13 +58,17 @@ public class MultiStringcoll {
             }
             if (p==null)
             {
-                howmany++; p=new btNode(i, null, null);
+                howmany++;total++; p=new btNode(i, null, null);
                 if (pred!=null)
                 {
                     if (pred.info.compareTo(i)>0) pred.left=p;
                     else pred.right=p;
                 }
                 else c=p;
+            }
+            else if (p.info.compareTo(i) == 0){
+                p.count += 1;
+                total++;
             }
         }
     }
@@ -80,10 +89,18 @@ public class MultiStringcoll {
                 else if (p.info.compareTo(i)<0) {
                     p = p.right;
                 }
+
             }
             if(p != null && p.info.compareTo(i) == 0){
 
-                if (p.left != null && p.right !=null){
+                if (p.count > 0){
+
+                    p.count -= 1;
+                    howmany--;
+                    total--;
+                }
+
+                else if (p.left != null && p.right !=null){
                     tmp = p;  btNode tmpPred = null;
                     while (tmp.left != null){
 
@@ -145,6 +162,7 @@ public class MultiStringcoll {
                     //p=null;
                     //pred.left = null;pred.right = null;
                     howmany--;
+                    total--;
 
                 }
                 else if(p.right == null && p.left != null){
@@ -154,6 +172,7 @@ public class MultiStringcoll {
                         pred.left = p.left;
                         p = null;
                         howmany--;
+                        total--;
                     }
 
                 }else if(p.right != null && p.left == null){
@@ -163,6 +182,7 @@ public class MultiStringcoll {
                         pred.right = p.right;
                         p = null;
                         howmany--;
+                        total--;
                     }
                 }else  if(p.right == null && p.left == null){
                     if (pred != null) {
@@ -179,6 +199,7 @@ public class MultiStringcoll {
                         c=p;
                     }
                     howmany--;
+                    total--;
                 }
             }
 
@@ -199,9 +220,27 @@ public class MultiStringcoll {
 
     public int get_howmany() {return howmany;}
 
+    public int get_total(){
+        //int total = 0;
+        //total = get_total_tree(c);
+        return total;
+    }
+    /*
+    public int get_total_tree(btNode t){
+
+        int a =0;
+        get_total_tree(t.left);
+        a+= t.count+1;
+        get_total_tree(t.right);
+
+        return a;
+    }
+    */
+
     public void print()
     {
         printtree(c);
+        System.out.println("There are "+get_total()+" strings in total");
     }
 
     public boolean equals(MultiStringcoll obj)
@@ -233,7 +272,7 @@ public class MultiStringcoll {
         if (t!=null)
         {
             printtree(t.left);
-            System.out.println(t.info);
+            System.out.println(t.info + "("+(t.count+1)+")");
             printtree(t.right);
         }
     }
@@ -269,19 +308,19 @@ public class MultiStringcoll {
         MultiStringcoll temp = new MultiStringcoll();
         MultiStringcoll temp1 = new MultiStringcoll();
         temp.insert("hello");
-        temp.insert("bye");
+        temp.insert("hello");
         temp.insert("hi");
 
         //temp.print();
 
-        temp1.insert("d");
-        temp1.insert("f");
-        temp1.insert("g");
+        //temp1.insert("d");
+        //temp1.insert("f");
+        //temp1.insert("g");
         //temp1.print();
         //temp1.insert(5);
         //temp1.insert(6);
         //temp2.copy(temp1);
-        System.out.println(temp.equals(temp1));
+        //System.out.println(temp.equals(temp1));
         temp.omit("bye");
         temp.print();
     }
