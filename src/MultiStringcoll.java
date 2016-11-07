@@ -245,7 +245,7 @@ public class MultiStringcoll {
 
     public boolean equals(MultiStringcoll obj)
     {
-        int j = 0; boolean result  = (howmany==obj.howmany);
+        int j = 0; boolean result  = (howmany==obj.howmany) && (total == obj.total);
         if (result)
         {
 
