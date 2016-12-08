@@ -33,10 +33,11 @@ public class InsertionSortTest {
             for(i = x - 1; (i >= 0) && (thearray[ i ] < key); i--)
             {
                 thearray[ i+1] = thearray[i];
+                icount++;
                 //Smaller values are moved up
             }
             thearray[ i+1 ] = key;// Put the key in its proper location
-            icount++;
+
         }
     }
 }

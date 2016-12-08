@@ -8,6 +8,7 @@ public class MergeSortTest {
     static int numcalls=0;
     static int count=0, m=0;
 
+
     public static void main(String[] args)
     {
         Random gen=new Random(); int[] a=new int[32];
@@ -15,12 +16,13 @@ public class MergeSortTest {
         System.out.println("Initial array:");
         for (i=0; i<a.length; i++) System.out.println(a[i] + " ");
         System.out.println();
+        MergeSortTest b = new MergeSortTest();
         mergesort(a, 0, a.length-1);
         System.out.println("Sorted array:");
         for (i=0; i<a.length; i++) System.out.println(a[i] + " ");
         System.out.println("Done!");
-        System.out.println(" numcalls "+numcalls);
-        System.out.println(" count "+count+" m "+m);
+        System.out.println("numcalls "+numcalls);
+        System.out.println("count "+count+" m "+m);
     }
 
     public static void mergesort(int[] a, int top, int bottom)
